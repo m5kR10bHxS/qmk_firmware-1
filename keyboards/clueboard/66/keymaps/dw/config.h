@@ -26,7 +26,7 @@
 
 #define TAPPING_TERM 200               // How long before a tap becomes a hold, if set above 500, a key tapped during the tapping term will turn it into a hold.
 
-#define CAPS_WORD_IDLE_TIMEOUT 5000    // Set the idle timeout for the caps word function to five seconds.
+#define CAPS_WORD_IDLE_TIMEOUT 3000    // Set the idle timeout for the caps word function to three seconds.
 
 #define UNICODE_SELECTED_MODES UC_LNX  // Set the Unicode input mode to the Linux OS character input sequence.
 
