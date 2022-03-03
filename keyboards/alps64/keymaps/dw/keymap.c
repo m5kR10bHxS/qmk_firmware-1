@@ -28,8 +28,8 @@ uint16_t copy_paste_timer;
 #define _FN      3
 #define _ADJ  4
 
-#define KC_SFTT LSFT_T(KC_T)  // Tap for T, hold for Left Shift
-#define KC_SFNN RSFT_T(KC_N)  // Tap for N, hold for Right Shift
+#define KC_SHFT_T LSFT_T(KC_T)  // Tap for T, hold for Left Shift
+#define KC_SHFT_N RSFT_T(KC_N)  // Tap for N, hold for Right Shift
 
 enum custom_keycodes {
   qwerty = SAFE_RANGE,
@@ -49,7 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |-----------------------------------------------------------------------------------------+
      * | Shift     |  Z  |  X  |  C  |  V  |  B  |  N  |  M  |  ,  |  .  |  /  | RShift | Pg Dn  |
      * |-----------------------------------------------------------------------------------------+
-     * | Ctrl  | LGUI | LAlt  |           Space Fn _NAV             | RAlt | RGUI  |RAISE| RCtrl |
+     * | Ctrl  | LGUI | LAlt  |           Space Fn _NAV             | RAlt | RGUI  | _Fn | RCtrl |
      * `-----------------------------------------------------------------------------------------'
      */
 
@@ -71,16 +71,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |-----------------------------------------------------------------------------------------+
      * | Shift     |  Z  |  X  |  M  |  C  |  V  |  K  |  L  |  ,  |  .  |  /  | RShift | Pg Dn  |
      * |-----------------------------------------------------------------------------------------+
-     * | Ctrl  | LGUI | LAlt  |           Space Fn _NAV             | RAlt | RGUI  |RAISE| RCtrl |
+     * | Ctrl  | LGUI | LAlt  |           Space Fn _NAV             | RAlt | RGUI  | _Fn | RCtrl |
      * `-----------------------------------------------------------------------------------------'
      */
 
    [_WORKMAN] = LAYOUT_infinity( \
-      KC_ESC,  KC_1,    KC_2,    KC_3,   KC_4,    KC_5,   KC_6,   KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSLS,  KC_GRV, \
-      KC_TAB,  KC_Q,    KC_D,    KC_R,   KC_W,    KC_B,   KC_J,   KC_F,    KC_U,    KC_P,    KC_SCLN, KC_LBRC, KC_RBRC, KC_BSPC,          \
-      KC_BSPC, KC_A,    KC_S,    KC_H,   KC_SFTT, KC_G,   KC_Y,   KC_SFNN, KC_E,    KC_O,    KC_I,    KC_QUOT, KC_ENT,                    \
-      KC_LSFT, KC_Z,    KC_X,    KC_M,   KC_C,    KC_V,   KC_K,   KC_L,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, KC_PGDN,                   \
-      KC_LCTL, KC_LGUI, KC_LALT,                  LT(_NAV, KC_SPACE),                                 KC_RALT, KC_RGUI, MO(_FN),  KC_RCTL
+      KC_ESC,  KC_1,    KC_2,    KC_3,   KC_4,      KC_5,   KC_6,   KC_7,      KC_8,    KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSLS,  KC_GRV, \
+      KC_TAB,  KC_Q,    KC_D,    KC_R,   KC_W,      KC_B,   KC_J,   KC_F,      KC_U,    KC_P,    KC_SCLN, KC_LBRC, KC_RBRC, KC_BSPC,          \
+      KC_BSPC, KC_A,    KC_S,    KC_H,   KC_SHFT_T, KC_G,   KC_Y,   KC_SHFT_N, KC_E,    KC_O,    KC_I,    KC_QUOT, KC_ENT,                    \
+      KC_LSFT, KC_Z,    KC_X,    KC_M,   KC_C,      KC_V,   KC_K,   KC_L,      KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, KC_PGDN,                   \
+      KC_LCTL, KC_LGUI, KC_LALT,                    LT(_NAV, KC_SPACE),                                   KC_RALT, KC_RGUI, MO(_FN),  KC_RCTL
   ),
 
     /* Navigation Layer: _NAV
@@ -135,7 +135,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |-----------------------------------------------------------------------------------------+
      * |         |     |     |     |     |     |     |     |     |     |     |     |             |
      * |-----------------------------------------------------------------------------------------+
-     * |           |     |     |     |     |     |     |     |     |     |     |        |        |
+     * | DT Print  |DT U |DT D |     |     |     |     |     |     |     |     |        |        |
      * |-----------------------------------------------------------------------------------------+
      * |       |Toggle|       |                                     |      |       |     |       |
      * `-----------------------------------------------------------------------------------------'
@@ -145,10 +145,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       RESET,   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
       _______, qwerty,  workman, _______, RESET,   _______, _______, _______, _______, _______, _______, _______, _______, _______,          \
       _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                   \
-      _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                   \
+      DT_PRNT, DT_UP,   DT_DOWN, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,                   \
       _______, GUI_TOG, _______,                   _______,                                              _______, _______, _______, _______
+
+      // DT keycodes adjust the dynamic tapping term by 5ms - this offset is not persistent
   )
 };
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KC_SHFT_T:                  // List keys that require an offset from global tapping term
+        case KC_SHFT_N:
+            return TAPPING_TERM + 50;    // Amount of offset
+        default:
+            return TAPPING_TERM;
+    }
+}
+
+bool get_tapping_force_hold(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KC_SHFT_T:        // List keys that should not repeat (home row mods)
+        case KC_SHFT_N:
+            return true;
+        default:               // Keys are permitted to repeat (default action)
+            return false;
+    }
+}
 
 layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _NAV, _FN, _ADJ);

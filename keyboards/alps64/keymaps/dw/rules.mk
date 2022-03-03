@@ -41,4 +41,6 @@ LTO_ENABLE = yes           # Link Time Optimization - creates smaller binary
 
 # LAYOUTS = infinity
 
-SRC += features/caps_word.c
+SRC += features/caps_word.c          # Include the caps word features folder
+
+DYNAMIC_TAPPING_TERM_ENABLE = yes    # Allow tapping term adjustmet on the fly NOTE: Adjustments are not persistent
