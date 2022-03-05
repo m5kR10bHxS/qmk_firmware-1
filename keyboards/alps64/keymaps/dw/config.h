@@ -59,16 +59,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //#define NO_ACTION_TAPPING            // Disable tap dance and other tapping features
 //#define NO_ACTION_ONESHOT            // Disable one-shot modifiers
 
-#define CAPS_WORD_IDLE_TIMEOUT 3000    // Set the idle timeout for the caps word function to three seconds.
+#define CAPS_WORD_IDLE_TIMEOUT 3000    // Set idle timeout for the caps word function to 3 seconds
 
-#define UNICODE_SELECTED_MODES UC_LNX  // Set the Unicode input mode to the Linux OS character input sequence.
+#define LEADER_TIMEOUT 400             // Set time out for the Leader function
+
+#define UNICODE_SELECTED_MODES UC_LNX  // Set Unicode input mode to Linux mode
 
 // Home-row mod configuration options
 #define TAPPING_TERM 200               // How long before a tap becomes a hold, if set above 500, a key tapped during the tapping term will turn it into a hold.
-#define TAPPING_TERM_PER_KEY           // Permits configuring tapping offsets from the global TAPPING_TERM
-#define IGNORE_MOD_TAP_INTERRUPT       // Mod Tap keys are no longer treated as a special case ...
-//#define TAPPING_FORCE_HOLD             // Enable rapid switch from tap to hold, disables double tap hold auto-repeat
+#define TAPPING_TERM_PER_KEY           // Permits tapping offsets from the global TAPPING_TERM
+#define IGNORE_MOD_TAP_INTERRUPT       // Mod Tap keys are no longer treated as a special case
+//#define TAPPING_FORCE_HOLD           // Enable rapid switch from tap to hold, disables double tap hold auto-repeat
 #define TAPPING_FORCE_HOLD_PER_KEY     // Configure TAPPING_Force_HOLD per key
 #define PERMISSIVE_HOLD                // If the PERMISSIVE_HOLD option is enabled, the dual-role key will perform its hold action instead
-//#define PERMISSIVE_HOLD_PER_KEY        // Configuere PERMISSIVE_HOLD per key
+//#define PERMISSIVE_HOLD_PER_KEY      // Configuere PERMISSIVE_HOLD per key
 #define BILATERAL_COMBINATIONS         // The last mod-tap hold will be converted to the corresponding mod-tap tap if another key on the same hand is tapped during the hold, unless a key on the other hand is tapped first

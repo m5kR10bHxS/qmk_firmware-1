@@ -26,7 +26,7 @@ uint16_t copy_paste_timer;
 #define _WORKMAN 1
 #define _NAV     2
 #define _FN      3
-#define _ADJ  4
+#define _ADJ     4
 
 #define KC_SHFT_T LSFT_T(KC_T)  // Tap for T, hold for Left Shift
 #define KC_SHFT_N RSFT_T(KC_N)  // Tap for N, hold for Right Shift
@@ -49,7 +49,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |-----------------------------------------------------------------------------------------+
      * | Shift     |  Z  |  X  |  C  |  V  |  B  |  N  |  M  |  ,  |  .  |  /  | RShift | Pg Dn  |
      * |-----------------------------------------------------------------------------------------+
-     * | Ctrl  | LGUI | LAlt  |           Space Fn _NAV             | RAlt | RGUI  | _Fn | RCtrl |
+     * | Ctrl  | LGUI | LAlt  |           Space Fn _NAV             | RAlt |Leader | _Fn | RCtrl |
      * `-----------------------------------------------------------------------------------------'
      */
 
@@ -58,7 +58,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TAB,  KC_Q,    KC_W,    KC_E,   KC_R,   KC_T,   KC_Y,   KC_U,   KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSPC,          \
       KC_CAPS, KC_A,    KC_S,    KC_D,   KC_F,   KC_G,   KC_H,   KC_J,   KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,                    \
       KC_LSFT, KC_Z,    KC_X,    KC_C,   KC_V,   KC_B,   KC_N,   KC_M,   KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, KC_PGDN,                   \
-      KC_LCTL, KC_LGUI, KC_LALT,                 LT(_NAV, KC_SPACE),                                KC_RALT, KC_RGUI, MO(_FN),  KC_RCTL
+      KC_LCTL, KC_LGUI, KC_LALT,                 LT(_NAV, KC_SPACE),                                KC_RALT, KC_LEAD, MO(_FN),  KC_RCTL
   ),
 
     /* Alternate Base Layer: _WORKMAN
@@ -71,7 +71,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      * |-----------------------------------------------------------------------------------------+
      * | Shift     |  Z  |  X  |  M  |  C  |  V  |  K  |  L  |  ,  |  .  |  /  | RShift | Pg Dn  |
      * |-----------------------------------------------------------------------------------------+
-     * | Ctrl  | LGUI | LAlt  |           Space Fn _NAV             | RAlt | RGUI  | _Fn | RCtrl |
+     * | Ctrl  | LGUI | LAlt  |           Space Fn _NAV             | RAlt |Leader | _Fn | RCtrl |
      * `-----------------------------------------------------------------------------------------'
      */
 
@@ -80,7 +80,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       KC_TAB,  KC_Q,    KC_D,    KC_R,   KC_W,      KC_B,   KC_J,   KC_F,      KC_U,    KC_P,    KC_SCLN, KC_LBRC, KC_RBRC, KC_BSPC,          \
       KC_BSPC, KC_A,    KC_S,    KC_H,   KC_SHFT_T, KC_G,   KC_Y,   KC_SHFT_N, KC_E,    KC_O,    KC_I,    KC_QUOT, KC_ENT,                    \
       KC_LSFT, KC_Z,    KC_X,    KC_M,   KC_C,      KC_V,   KC_K,   KC_L,      KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT, KC_PGDN,                   \
-      KC_LCTL, KC_LGUI, KC_LALT,                    LT(_NAV, KC_SPACE),                                   KC_RALT, KC_RGUI, MO(_FN),  KC_RCTL
+      KC_LCTL, KC_LGUI, KC_LALT,                    LT(_NAV, KC_SPACE),                                   KC_RALT, KC_LEAD, MO(_FN),  KC_RCTL
   ),
 
     /* Navigation Layer: _NAV
@@ -209,16 +209,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-/*
-The default behavior (when CAPS_WORD_IDLE_TIMEOUT isn't set, or set to 0) is that Caps Word
-never times out, and in this case it isn't necessary to call caps_word_task(). Caps Word
-remains active indefinitely until a word breaking key is pressed.
-
-The following function checks the caps word timer (configured in config.h) to determine if
-it has expired and if so, it will deactivate caps word one the timer expires.
+LEADER_EXTERNS();
 
 void matrix_scan_user(void) {
-  caps_word_task();
-  // Other tasks...
+  LEADER_DICTIONARY() {
+    leading = false;
+    leader_end();
+
+    SEQ_ONE_KEY(KC_A) {
+      // Send a set of Angle brackets
+      SEND_STRING("<>"); tap_code(KC_LEFT);
+    }
+    SEQ_ONE_KEY(KC_C) {
+      // Send a set of curly brackets
+      SEND_STRING("{}"); tap_code(KC_LEFT);
+    }
+    SEQ_ONE_KEY(KC_P) {
+      // Send a set of parenthesis
+      SEND_STRING("()"); tap_code(KC_LEFT);
+    }
+    SEQ_ONE_KEY(KC_Q) {
+      // Send a set of Double quotes
+      SEND_STRING("\"\""); tap_code(KC_LEFT);
+    }
+    SEQ_ONE_KEY(KC_S) {
+      // Send a set of square brackets
+      SEND_STRING("[]"); tap_code(KC_LEFT);
+    }
+  }
 }
-*/
