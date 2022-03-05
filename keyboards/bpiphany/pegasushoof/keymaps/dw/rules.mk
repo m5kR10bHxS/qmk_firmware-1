@@ -34,10 +34,9 @@ FAUXCLICKY_ENABLE = no     # Use buzzer to emulate clicky switches
 BOOTMAGIC_ENABLE = no      # Virtual DIP switch configuration
 CONSOLE_ENABLE = no        # Console for debug
 COMMAND_ENABLE = no        # Commands for debug and configuration
-LEADER_ENABLE = no         # Enable the Leader Key feature
+LEADER_ENABLE = yes        # Enable the Leader Key feature
 MOUSEKEY_ENABLE = no       # Enable mouse emulation
 NKRO_ENABLE = no           # USB Nkey Rollover - See: https://github.com/tmk/tmk_keyboard/wiki/FAQ#nkro-doesnt-work
-UNICODE_ENABLE = no        # Enable unicode support for codes up to 0x7FFF
+UNICODE_ENABLE = yes       # Enable unicode support for codes up to 0x7FFF
 LTO_ENABLE = yes           # Link Time Optimization - creates smaller binary
 # DEFAULT_FOLDER = 
-
