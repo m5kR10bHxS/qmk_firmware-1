@@ -1,23 +1,51 @@
-// Clueboard 66 rev2 config.h
+// Kyria config.h
+
+/* Copyright 2019 Thomas Baart <thomas@splitkb.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #pragma once
 
-#include "config_common.h"
+#ifdef OLED_DRIVER_ENABLE
+  #define OLED_DISPLAY_128X64
+#endif
 
-#define BACKLIGHT_LEVELS 1               // Backlight configuration
+#ifdef RGBLIGHT_ENABLE
+  #define RGBLIGHT_SPLIT
+  #define RGBLIGHT_SETHSV_NOEEPROM(HSV_PURPLE)
+//  #define RGBLIGHT_ANIMATIONS
+  #define RGBLIGHT_EFFECT_RAINBOW_MOOD
+  #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
+  #define RGBLIGHT_HUE_STEP 8
+  #define RGBLIGHT_SAT_STEP 8
+  #define RGBLIGHT_VAL_STEP 8
+  #define RGBLIGHT_SLEEP
+#endif
 
-// Underlight configuration
-#define RGBLIGHT_EFFECT_BREATHE_CENTER 1
-#define RGBLIGHT_EFFECT_BREATHE_MAX 200
-#define RGBLIGHT_EFFECT_CHRISTMAS_INTERVAL 666*2
-#define RGBLIGHT_EFFECT_CHRISTMAS_STEP 1
-#define RGBLIGHT_EFFECT_KNIGHT_LENGTH 3          // How many LEDs wide to light up
-#define RGBLIGHT_EFFECT_KNIGHT_OFFSET 1          // The led to start at
-#define RGBLIGHT_EFFECT_KNIGHT_LED_NUM 5         // How many LEDs to travel
-#define RGBLIGHT_EFFECT_SNAKE_LENGTH 4           // How many LEDs wide to light up
+#define ENCODERS_PAD_A { C6 }
+#define ENCODERS_PAD_B { B5 }
 
-//#define LOCKING_SUPPORT_ENABLE       // Mechanical locking support. Use KC_LCAP, KC_LNUM or KC_LSCR instead in keymap
-//#define LOCKING_RESYNC_ENABLE        // Locking resynchronize hack
+/* EC11K encoders have a different resolution than other EC11 encoders.
+ * When using the default resolution of 4, if you notice your encoder skipping
+ * every other tick, lower the resolution to 2.
+ */
+#define ENCODER_RESOLUTION 2
+
+// Split Keyboard handedness
+//#define EE_HANDS                      // Allows to use either side as the master
+#define MASTER_LEFT
 
 //#define MATRIX_HAS_GHOST             // define if matrix has ghost
 
