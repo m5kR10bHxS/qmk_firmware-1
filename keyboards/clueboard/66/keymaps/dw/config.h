@@ -2,20 +2,17 @@
 
 #include "config_common.h"
 
-/* Backlight configuration
- */
-#define BACKLIGHT_LEVELS 1
+#define BACKLIGHT_LEVELS 1               // Backlight configuration
 
-/* Underlight configuration
- */
+// Underlight configuration
 #define RGBLIGHT_EFFECT_BREATHE_CENTER 1
 #define RGBLIGHT_EFFECT_BREATHE_MAX 200
 #define RGBLIGHT_EFFECT_CHRISTMAS_INTERVAL 666*2
 #define RGBLIGHT_EFFECT_CHRISTMAS_STEP 1
-#define RGBLIGHT_EFFECT_KNIGHT_LENGTH 3   // How many LEDs wide to light up
-#define RGBLIGHT_EFFECT_KNIGHT_OFFSET 1   // The led to start at
-#define RGBLIGHT_EFFECT_KNIGHT_LED_NUM 5  // How many LEDs to travel
-#define RGBLIGHT_EFFECT_SNAKE_LENGTH 4    // How many LEDs wide to light up
+#define RGBLIGHT_EFFECT_KNIGHT_LENGTH 3          // How many LEDs wide to light up
+#define RGBLIGHT_EFFECT_KNIGHT_OFFSET 1          // The led to start at
+#define RGBLIGHT_EFFECT_KNIGHT_LED_NUM 5         // How many LEDs to travel
+#define RGBLIGHT_EFFECT_SNAKE_LENGTH 4           // How many LEDs wide to light up
 
 //#define MATRIX_HAS_GHOST             // define if matrix has ghost
 
@@ -32,10 +29,10 @@
 
 // Feature disable options
 // These options are also useful to firmware size reduction.
-//#define NO_DEBUG                  // Disable debug print
-//#define NO_PRINT                  // Disable print
-#define NO_ACTION_MACRO           // Disable old-style macro handling using MACRO(), action_get_macro() (deprecated)
-#define NO_ACTION_FUNCTION        // Disable old-style function handling using fn_actions, action_function() (deprecated)
-//#define NO_ACTION_LAYER           // Disable layers
-//#define NO_ACTION_TAPPING         // Disable tap dance and other tapping features
-//#define NO_ACTION_ONESHOT         // Disable one-shot modifiers
+//#define NO_DEBUG                     // Disable debug print
+//#define NO_PRINT                     // Disable print
+#define NO_ACTION_MACRO                // Disable old-style macro handling using MACRO(), action_get_macro() (deprecated)
+#define NO_ACTION_FUNCTION             // Disable old-style function handling using fn_actions, action_function() (deprecated)
+//#define NO_ACTION_LAYER              // Disable layers
+//#define NO_ACTION_TAPPING            // Disable tap dance and other tapping features
+//#define NO_ACTION_ONESHOT            // Disable one-shot modifiers

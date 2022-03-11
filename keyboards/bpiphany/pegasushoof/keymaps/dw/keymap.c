@@ -1,4 +1,4 @@
-// Pegasus Hoof AKA Fiilco Majestouch II TKL
+// Pegasus Hoof / Filco Majestouch II TKL
 
 /*
 Copyright 2016 Daniel Svensson <dsvensson@gmail.com>
@@ -18,19 +18,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include QMK_KEYBOARD_H
+#include "features/caps_word.h"
 
 uint16_t copy_paste_timer;
 
-#define _QWERTY  0  // QWERTY
-#define _WORKMAN 1  // Workman
-#define _NAV     2  // Navigation
-#define _FN      3  // Function
-#define _ADJ     4  // Adjustments
+// Each layer gets a name for readability, which is then used in the keymap matrix below.
+// The underscores don't mean anything - you can have a layer called STUFF or any other name.
+#define _QWERTY  0
+#define _WORKMAN 1
+#define _NAV     2
+#define _FN      3
+#define _ADJ     4
+
+#define KC_SHFT_T LSFT_T(KC_T)  // Tap for T, hold for Left Shift
+#define KC_SHFT_N RSFT_T(KC_N)  // Tap for N, hold for Right Shift
 
 enum custom_keycodes {
-    qwerty = SAFE_RANGE,
-    workman
-    CCCV            // Hold to copy, tap to paste
+  qwerty = SAFE_RANGE,
+  workman
+  CCCV            // Hold to copy, tap to paste
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -38,16 +44,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Base Layer: _QWERTY
  * +-------+------+------+------+------+------+-----+------+------+------+------+----+------+------+-------+-------+    +--------+--------+--------+
  * |  Esc  |  xx  |  F1  |  F2  |  F3  |  F4  |  xx |  F5  |  F6  |  F7  |  F8  | XX |  F9  |  F10 |  F11  |  F12  |    | Prt Scr| Scr Lk |  Pause |
- * |-------+-------+-------+------+------+------+------+------+------+------+------+-------+-------+-------+-------|    |--------+--------+--------|
+ * |-------+------+------+------+------+------+-----+------+------+------+------+----+------+------+-------+-------|    |--------+--------+--------|
  * |  ` ~  |   1   |   2   |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  - _  |  = +  |   Backspace   |    | Insert |  Home  |  Pg Up |
  * |-------+-------+-------+------+------+------+------+------+------+------+------+-------+-------+-------+-------|    |--------+--------+--------|
  * |  Tab   |   Q   |   W   |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  |  [ {  |  ] }  |     \ |      |    | Delete |   End  |  Pg Dn |
- * |-------+-------+-------+------+------+------+------+------+------+------+------+-------+-------+---_---+-------|    +--------+--------+--------+
+ * |-------+-------+-------+------+------+------+------+------+------+------+------+-------+--------+--------------|    +--------+--------+--------+
  * | Caps Lk  |   A   |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |  ; :  |  ' "  |       Enter        |
- * |-------+-------+-------+------+------+------+------+------+------+------+------+-------+-------+---------------|             +--------+
+ * |----------+-------+------+------+------+------+------+------+------+------+-------+-------+--------------------|             +--------+
  * |   Shift    |  XX   |   Z  |   X  |   C  |   V  |   B  |   N  |   M  |  , < |  . > |  /  ?  |     Shift        |             |   Up   |
- * |-------+-------+-------+------+------+------+------+------+------+------+------+-------+-------+-------+-------|    +--------+--------+--------+
- * |  Ctrl |  GUI  |  Alt  |                     Space Fn (_NAV)                   |  Alt  |Leader |  _Fn  |  Ctrl |    |  Left  |  Down  |  Right |
+ * |-------+-------+-------+---+------+------+------+------+------+------+------+------+--------+----------+-------|    +--------+--------+--------+
+ * |  Ctrl |  GUI  |  Alt  |                     Space Fn _NAV                     |  Alt  |Leader |  _Fn  |  Ctrl |    |  Left  |  Down  |  Right |
  * +-------+-------+-------+-------------------------------------------------------+-------+-------+-------+-------+    +--------+--------+--------+
 */
 
@@ -61,44 +67,44 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  ),
 
 /* Alternate Base Layer: _WORKMAN
- *  --------+-----+------+------+------+------+----+------+------+------+------+----+------+------+-------+-------     +--------+--------+--------+
+ * +--------+-----+------+------+------+------+----+------+------+------+------+----+------+------+-------+-------+    +--------+--------+--------+
  * |  Esc   | XX  |  F1  |  F2  |  F3  |  F4  |  XX|  F5  |  F6  |  F7  |  F8  |  XX|  F9  |  F10 |  F11  |  F12  |    | Prt Scr| Scr Lk |  Pause |
- * |--------+------+------+------+------+------+------+------+------+------+------+-------+-------+-------+-------|    |--------+--------+--------|
+ * |--------+-----+------+------+------+------+------+----+------+------+------+----+------+------+-------+-------|    |--------+--------+--------|
  * |  ` ~   |   1  |   2  |   3  |   4  |   5  |   6  |   7  |   8  |   9  |   0  |  - _  |  = +  |   Backspace   |    | Insert |  Home  |  Pg Up |
- * |--------+------+------+------+------+------+------+------+------+------+------+-------+-------+------+--------|    |--------+--------+--------|
- * |  Tab    |   Q  |   D  |   R  |   W  |   B  |   J  |   F  |   U  |   P  |   ;  |  [ {  |  ] }  |     \ |      |    | Delete |   End  |  Pg Dn |
- * |--------+------+------+------+------+------+------+------+------+------+------+-------+-------+------+--------|    +--------+--------+--------+
+ * |--------+------+------+------+------+------+------+------+------+------+------+-------+-------+---------------|    |--------+--------+--------|
+ * |  Tab    |   Q  |   D  |   R  |   W  |   B  |   J  |   F  |   U  |   P  |   ;  |  [ {  |  ] }  |    \ |       |    | Delete |   End  |  Pg Dn |
+ * |---------+------+------+------+------+------+------+------+------+------+------+-------+-------+--------------|    +--------+--------+--------+
  * |Backspace |   A  |   S  |   H  |   T  |   G  |   Y  |   N  |   E  |   O  |   I   |  ' "  |        Enter       |
- * |--------+------+------+------+------+------+------+------+------+------+------+-------+-------+---------------|             +--------+
+ * |----------+------+------+------+------+------+------+------+------+------+-------+-------+--------------------|             +--------+
  * |   Shift    |  XX  |   Z  |   X  |   M  |   C  |   V  |   K  |   L  |  , < |  . > |  /  ?  |      Shift       |             |   Up   |
- * |--------+------+------+------+------+------+------+------+------+------+------+-------+-------+-------+-------|    +--------+--------+--------+
- * |  Ctrl  |  GUI |  Alt |                     Space Fn (_NAV)                   |  Alt  |Leader |  _Fn  |  Ctrl |    |  Left  |  Down  |  Right |
- *  --------+------+------+-------------------------------------------------------+-------+-------+-------+-------     +--------+--------+--------+
+ * |------------+------+------+------+------+------+------+------+------+------+------+--------+----------+-------|    +--------+--------+--------+
+ * |  Ctrl  |  GUI |  Alt |                     Space Fn _NAV                     |  Alt  |Leader |  _Fn  |  Ctrl |    |  Left  |  Down  |  Right |
+ * +--------+------+------+-------------------------------------------------------+-------+-------+-------+-------+    +--------+--------+--------+
 */
 
  [_WORKMAN] = LAYOUT_tkl_ansi( \
-   KC_ESC,           KC_F1,   KC_F2, KC_F3, KC_F4,   KC_F5, KC_F6,  KC_F7, KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_PSCR, KC_SLCK, KC_PAUS, \
-   KC_GRV,  KC_1,    KC_2,    KC_3,  KC_4,  KC_5,    KC_6,  KC_7,   KC_8,  KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_INS,  KC_HOME, KC_PGUP, \
-   KC_TAB,  KC_Q,    KC_D,    KC_R,  KC_W,  KC_B,    KC_J,  KC_F,   KC_U,  KC_P,    KC_SCLN, KC_LBRC, KC_RBRC, KC_BSLS, KC_DEL,  KC_END,  KC_PGDN, \
-   KC_BSPC, KC_A,    KC_S,    KC_H,  KC_T,  KC_G,    KC_Y,  KC_N,   KC_E,  KC_O,    KC_I,    KC_QUOT,          KC_ENT,                             \
-   KC_LSFT,          KC_Z,    KC_X,  KC_M,  KC_C,    KC_V,  KC_K,   KC_L,  KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT,          KC_UP,            \
-   KC_LCTL, KC_LGUI, KC_LALT,               LT(_NAV, KC_SPC),                       KC_RALT, KC_LEAD, MO(_FN), KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT  \
+   KC_ESC,           KC_F1,   KC_F2, KC_F3,     KC_F4,   KC_F5,   KC_F6,     KC_F7, KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_PSCR, KC_SLCK, KC_PAUS, \
+   KC_GRV,  KC_1,    KC_2,    KC_3,  KC_4,      KC_5,    KC_6,    KC_7,      KC_8,  KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC, KC_INS,  KC_HOME, KC_PGUP, \
+   KC_TAB,  KC_Q,    KC_D,    KC_R,  KC_W,      KC_B,    KC_J,    KC_F,      KC_U,  KC_P,    KC_SCLN, KC_LBRC, KC_RBRC, KC_BSLS, KC_DEL,  KC_END,  KC_PGDN, \
+   KC_BSPC, KC_A,    KC_S,    KC_H,  KC_SHFT_T, KC_G,    KC_Y,    KC_SHFT_N, KC_E,  KC_O,    KC_I,    KC_QUOT,          KC_ENT,                             \
+   KC_LSFT,          KC_Z,    KC_X,  KC_M,      KC_C,    KC_V,    KC_K,      KC_L,  KC_COMM, KC_DOT,  KC_SLSH,          KC_RSFT,          KC_UP,            \
+   KC_LCTL, KC_LGUI, KC_LALT,                   LT(_NAV, KC_SPC),                            KC_RALT, KC_LEAD, MO(_FN), KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT  \
  ),
 
 /* Navigation Layer: _NAV
- *  --------+-----+------+------+------+------+----+------+------+------+------+----+------+------+-------+-------     +--------+--------+--------+
+ * +--------+-----+------+------+------+------+----+------+------+------+------+----+------+------+-------+-------+    +--------+--------+--------+
  * |   ` ~  |  XX |      |      |      |      | XX |      |      |      |      | XX |      |      |       |       |    |        |        |        |
- * |--------+------+------+------+------+------+------+------+------+------+------+-------+-------+-------+-------|    |--------+--------+--------|
+ * |--------+------+------+-----+------+------+----+------+------+------+------+----+------+------+-------+-------|    |--------+--------+--------|
  * |        |      |      |      |      |      |      |      |      |      |      | Vol-  | Vol+  |    Delete     |    |        |        |        |
- * |--------+------+------+------+------+------+------+------+------+------+------+-------+-------+------+--------|    |--------+--------+--------|
+ * |--------+------+------+------+------+------+------+------+------+------+------+-------+-------+---------------|    |--------+--------+--------|
  * |         |      |      |      |      |      |      |Pg Up |  Up  |PtScn |      |       |       |              |    |        |        |        |
- * |--------+------+------+------+------+------+------+------+------+------+------+-------+-------+------+--------|    +--------+--------+--------+
+ * |--------+------+------+------+------+------+------+------+------+------+------+-------+--------+--------------|    +--------+--------+--------+
  * | Caps Lk   |      |      |      |      |      |      | Left | Down |Right |Insert |       |                   |
- * |--------+------+------+------+------+------+------+------+------+------+------+-------+-------+---------------|             +--------+
+ * |-----------+------+------+------+------+------+------+------+------+------+-------+-------+-------------------|             +--------+
  * |               |  XX  |      |      |      | CCCV |      |Pg Dn |      |      |       |       |               |             |        |
  * |--------+------+------+------+------+------+------+------+------+------+------+-------+-------+-------+-------|    +--------+--------+--------+
  * |        |      |      |                                                       |       |       |       |       |    |        |        |        |
- *  --------+------+------+-------------------------------------------------------+-------+-------+-------+-------     +--------+--------+--------+
+ * +--------+------+------+-------------------------------------------------------+-------+-------+-------+-------+    +--------+--------+--------+
 */
 
  [_NAV] = LAYOUT_tkl_ansi( \
@@ -131,11 +137,33 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  ),
 };
 
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KC_SHFT_T:                  // List keys that require an offset from global tapping term
+        case KC_SHFT_N:
+            return TAPPING_TERM + 50;    // Amount of offset
+        default:
+            return TAPPING_TERM;
+    }
+}
+
+bool get_tapping_force_hold(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KC_SHFT_T:        // List keys that should not repeat (home row mods)
+        case KC_SHFT_N:
+            return true;
+        default:               // Keys are permitted to repeat (default action)
+            return false;
+    }
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
   return update_tri_layer_state(state, _NAV, _FN, _ADJ);
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  if ( !process_caps_word(keycode, record)) { return false; }  // Detect call to caps word function (both shift keys simultaneously)
+
   switch (keycode) {
     case qwerty:
       if (record->event.pressed) {
@@ -153,10 +181,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case CCCV:  // One key copy/paste
       if (record->event.pressed) {
-          copy_paste_timer = timer_read();
+        copy_paste_timer = timer_read();
       } else {
           if (timer_elapsed(copy_paste_timer) > TAPPING_TERM) {  // Hold to copy
-              tap_code16(LCTL(KC_C));
+            tap_code16(LCTL(KC_C));
           } else { // Tap to paste
               tap_code16(LCTL(KC_V));
           }

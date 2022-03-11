@@ -197,13 +197,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case CCCV:  // One key copy/paste
       if (record->event.pressed) {
         copy_paste_timer = timer_read();
-          } else {
-              if (timer_elapsed(copy_paste_timer) > TAPPING_TERM) {  // Hold to copy
-                  tap_code16(LCTL(KC_C));
-              } else { // Tap to paste
+      } else {
+        if (timer_elapsed(copy_paste_timer) > TAPPING_TERM) {  // Hold to copy
+                tap_code16(LCTL(KC_C));
+        } else { // Tap to paste
                   tap_code16(LCTL(KC_V));
-              }
-          }
+        }
+      }
           break;
   }
   return true;
