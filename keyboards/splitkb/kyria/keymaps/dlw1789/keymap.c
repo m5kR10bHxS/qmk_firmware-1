@@ -139,6 +139,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!process_achordion(keycode, record)) { return false; }
     switch (keycode) {
         case KC_CCCV:  // One key copy/paste
             if (record->event.pressed) {
@@ -153,6 +154,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
     }
     return true;
+}
+
+void housekeeping_task_user(void) {
+  achordion_task();
 }
 
 LEADER_EXTERNS();
