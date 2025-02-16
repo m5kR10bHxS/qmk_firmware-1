@@ -11,9 +11,9 @@
 MCU = atmega32u2
 BOOTLOADER = atmel-dfu
 
-# Build Options - Disable unused features to reduce the size of the binary. 
+# Build Options - Disable unused features to reduce the size of the binary.
 # Change yes to no to disable
-# Hardware 
+# Hardware
 BLUETOOTH_ENABLE = no                # Enable Bluetooth with the Adafruit EZ-Key HID
 CUSTOM_MATRIX = no                   # Declare the use of I/O expander
 ENCODER_ENABLE = no                  # Enable the use of one or more encoders
@@ -32,7 +32,8 @@ FAUXCLICKY_ENABLE = no               # Use buzzer to emulate clicky switches
 MIDI_ENABLE = no                     # MIDI support
 # Features
 BOOTMAGIC_ENABLE = no                # Virtual DIP switch configuration
-COMMAND_ENABLE = no                  # Commands for debug and configuration
+CAPS_WORD_ENABLE = yes               # Hold both shift keys to capitalize the next word.
+COMMAND_ENABLE = no                  # Commands for debug and configuration; can interfere w/ caps word
 CONSOLE_ENABLE = no                  # Console for debug
 DYNAMIC_TAPPING_TERM_ENABLE = yes    # Allow tapping term adjustmet on the fly NOTE: Adjustments are not persistent
 LEADER_ENABLE = yes                  # Enable the Leader Key feature
@@ -41,6 +42,4 @@ MOUSEKEY_ENABLE = no                 # Enable mouse emulation
 NKRO_ENABLE = no                     # USB Nkey Rollover - See: https://github.com/tmk/tmk_keyboard/wiki/FAQ#nkro-doesnt-work
 UNICODE_ENABLE = yes                 # Enable unicode support for codes up to 0x7FFF
 
-SRC += features/caps_word.c          # Include the caps word features folder
-
-# DEFAULT_FOLDER = 
+# DEFAULT_FOLDER =
